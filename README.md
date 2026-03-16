@@ -2,93 +2,93 @@
 
 ## Objective
 
-The goal of this challenge was to obtain **root access** on the Bluemoon machine by identifying and exploiting system vulnerabilities.
+The goal of this challenge was to gain **root access** to the Bluemoon machine by identifying vulnerabilities and escalating privileges.
 
 ---
 
 # 1. Enumeration
 
-The first step was to enumerate the target machine to discover accessible directories.
-
-**Gobuster** was used to perform directory brute-forcing:
+Initial enumeration of the web server was performed using Gobuster to discover hidden directories.
 
 ```
 gobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt
 ```
 
-This revealed several directories that could potentially contain vulnerable functionality.
+This revealed several directories that could contain useful information for further exploitation.
 
-![Enumeration Screenshot](enumeration.png.png)
+![Enumeration](enumeration.png.png)
 
 ---
 
-# 2. Command Injection
+# 2. Credential Discovery
 
-During analysis, a script named **feedback.sh** was discovered.
-This script allowed command execution when run with elevated permissions.
+During enumeration, a password list was discovered that contained possible credentials.
+
+This information was used to attempt authentication on the system.
+
+![Password List](password-list.png.png)
+
+---
+
+# 3. Login as Robin
+
+Using the discovered credentials, access to the system was obtained as the user **robin**.
+
+![Login Robin](login-robin.png.png)
+
+---
+
+# 4. Privilege Escalation to Jerry
+
+Further analysis revealed a script (`feedback.sh`) that could be executed with elevated permissions.
 
 ```
 sudo -u jerry ./feedback.sh
 ```
 
-Testing simple commands confirmed command injection was possible:
+This allowed command execution as the user **jerry**.
 
-```
-whoami
-id
-```
-
-The output showed that the user **jerry** belonged to the **docker** group.
-
-![Command Injection Screenshot](command-injection.png.png)
+![Jerry Shell](jerry-shell.png.png)
 
 ---
 
-# 3. Docker Privilege Escalation
+# 5. Docker Privilege Escalation
 
-Because the user **jerry** was part of the docker group, it was possible to start a container with access to the host filesystem.
-
-The following command was used:
+The user **jerry** was found to belong to the **docker group**, which allows interaction with Docker containers.
 
 ```
 docker run -v /:/mnt -it alpine sh
 ```
 
-This mounts the host root directory `/` into the container at `/mnt`.
+This command mounts the host filesystem into the container.
 
-![Docker Privilege Escalation Screenshot](docker-privesc.png.png)
+![Docker Privilege Escalation](docker-privesc.png.png)
 
 ---
 
-# 4. Accessing Host Filesystem
+# 6. Accessing the Host Filesystem
 
-Inside the container, the host filesystem became accessible through `/mnt`.
-
-```
-ls /mnt
-```
-
-The root user's home directory was accessed with:
+Inside the container, the host filesystem became accessible via `/mnt`.
 
 ```
 cd /mnt/root
 ```
 
-![Filesystem Access Screenshot](jerry-shell.png.png)
+This allowed access to sensitive files on the host system.
 
 ---
 
-# 5. Root Flag
+# 7. Root Flag
 
-Finally, the root flag was obtained:
+Finally, the root flag was retrieved:
 
 ```
 cat root.txt
 ```
 
-This confirmed **full root access** to the Bluemoon machine.
+![Root Flag](root-flag.png.png)
 
-![Root Flag Screenshot](root-flag.png.png)
+This confirms **full root access** to the machine.
 
 ---
 
@@ -97,8 +97,9 @@ This confirmed **full root access** to the Bluemoon machine.
 This challenge demonstrated several important penetration testing concepts:
 
 * Web directory enumeration
-* Command injection exploitation
-* Privilege escalation through Docker group membership
-* Host filesystem access through container mounts
+* Credential discovery
+* Privilege escalation using sudo
+* Docker privilege escalation
+* Accessing the host filesystem
 
-By chaining these vulnerabilities together, full **root compromise** of the target system was achieved.
+By chaining these vulnerabilities together, complete compromise of the system was achieved.
