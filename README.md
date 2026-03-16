@@ -21,8 +21,7 @@ id
 This revealed that the user **jerry** belongs to the **docker group**.
 
 ## Step 3 - Docker Privilege Escalation
-Because jerry was in the docker group, a container could be started and the host filesystem mounted.
-
+Because jerry was in the docker group, a container could be started and the 
 docker run -v /:/mnt -it alpine sh
 
 ## Step 4 - Accessing Host Filesystem
@@ -40,3 +39,4 @@ The root flag was retrieved with:
 cat root.txt
 
 This confirmed full root access to the machine.
+
