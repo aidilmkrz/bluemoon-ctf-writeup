@@ -80,21 +80,31 @@ This page provided additional context for the challenge.
 
 ## 7. FTP Enumeration
 
-During further enumeration, FTP service was investigated for potential credentials.
+During further enumeration, the FTP service was accessed to look for useful files.
+
+Inside the FTP server, two files were discovered:
+- `information.txt`
+- `p_lists.txt`
+
+These files were retrieved and examined using the `cat` command.
 
 ![FTP Username & Password](ftpforusernamepassword.png)
 
-This step helped in identifying possible login credentials.
+From these files:
+- `information.txt` revealed the username
+- `p_lists.txt` contained a list of possible passwords
+
+This information was used for authentication attempts in the next steps.
 
 ---
 
 ## 8. Username Discovery
 
-Additional findings revealed a valid username: **robin**.
+From the FTP files, a valid username was identified: **robin**.
 
 ![Found Username](foundusernameasROBIN.png)
 
-This information was crucial for gaining access to the system.
+This username was later used together with the password list for login attempts.
 
 ---
 
