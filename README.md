@@ -6,7 +6,31 @@ The goal of this challenge was to gain **root access** to the Bluemoon machine b
 
 ---
 
-## 1. Enumeration
+## 1. Finding Target IP
+
+The first step was to identify the target machine on the network.
+
+![Finding IP](findingIP.png)
+
+This revealed the IP address of the Bluemoon machine.
+
+---
+
+## 2. Nmap Scan
+
+A network scan was performed using Nmap to identify open ports and services.
+
+```
+nmap -sC -sV 192.168.56.101
+```
+
+![Nmap Scan](nmapIP.png)
+
+This provided useful information about available services for further enumeration.
+
+---
+
+## 3. Enumeration
 
 Initial enumeration of the web server was performed using Gobuster to discover hidden directories.
 
@@ -20,7 +44,7 @@ This revealed several directories that could contain useful information for furt
 
 ---
 
-## 2. Game Begins
+## 4. Game Begins
 
 The target web application was accessed using a browser:
 
@@ -31,9 +55,10 @@ Upon visiting the page in Firefox, a message indicating the start of the challen
 ![Game Begins](gamebegins.png)
 
 This confirmed that the web application is the primary entry point and further analysis was required.
+
 ---
 
-## 3. Source Code Inspection
+## 5. Source Code Inspection
 
 The page source code was inspected to uncover hidden information.
 
@@ -43,7 +68,7 @@ This revealed useful hints that guided further exploitation.
 
 ---
 
-## 4. Bluemoon Page
+## 6. Bluemoon Page
 
 Further navigation led to the Bluemoon page.
 
@@ -53,7 +78,7 @@ This page provided additional context for the challenge.
 
 ---
 
-## 5. Credential Discovery
+## 7. Credential Discovery
 
 During enumeration, a password list was discovered that contained possible credentials.
 
@@ -63,7 +88,7 @@ This information was used to attempt authentication on the system.
 
 ---
 
-## 6. Login as Robin
+## 8. Login as Robin
 
 Using the discovered credentials, access to the system was obtained as the user **robin**.
 
@@ -71,7 +96,7 @@ Using the discovered credentials, access to the system was obtained as the user 
 
 ---
 
-## 7. Privilege Escalation to Jerry
+## 9. Privilege Escalation to Jerry
 
 Further analysis revealed a script (`feedback.sh`) that could be executed with elevated permissions.
 
@@ -85,7 +110,7 @@ This allowed command execution as the user **jerry**.
 
 ---
 
-## 8. Docker Privilege Escalation
+## 10. Docker Privilege Escalation
 
 The user **jerry** was found to belong to the **docker group**, which allows interaction with Docker containers.
 
@@ -99,7 +124,7 @@ This command mounts the host filesystem into the container.
 
 ---
 
-## 9. Accessing the Host Filesystem
+## 11. Accessing the Host Filesystem
 
 Inside the container, the host filesystem became accessible via `/mnt`.
 
@@ -111,7 +136,7 @@ This allowed access to sensitive files on the host system.
 
 ---
 
-## 10. Root Flag
+## 12. Root Flag
 
 Finally, the root flag was retrieved:
 
@@ -129,6 +154,7 @@ This confirms **full root access** to the machine.
 
 This challenge demonstrated several important penetration testing concepts:
 
+* Network scanning (Nmap)
 * Web directory enumeration
 * Credential discovery
 * Privilege escalation using sudo
