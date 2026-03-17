@@ -78,7 +78,27 @@ This page provided additional context for the challenge.
 
 ---
 
-## 7. Credential Discovery
+## 7. FTP Enumeration
+
+During further enumeration, FTP service was investigated for potential credentials.
+
+![FTP Username & Password](ftpforusernamepassword.png)
+
+This step helped in identifying possible login credentials.
+
+---
+
+## 8. Username Discovery
+
+Additional findings revealed a valid username: **robin**.
+
+![Found Username](foundusernameasROBIN.png)
+
+This information was crucial for gaining access to the system.
+
+---
+
+## 9. Credential Discovery
 
 During enumeration, a password list was discovered that contained possible credentials.
 
@@ -88,7 +108,7 @@ This information was used to attempt authentication on the system.
 
 ---
 
-## 8. Login as Robin
+## 10. Login as Robin
 
 Using the discovered credentials, access to the system was obtained as the user **robin**.
 
@@ -96,7 +116,7 @@ Using the discovered credentials, access to the system was obtained as the user 
 
 ---
 
-## 9. Privilege Escalation to Jerry
+## 11. Privilege Escalation to Jerry
 
 Further analysis revealed a script (`feedback.sh`) that could be executed with elevated permissions.
 
@@ -110,7 +130,7 @@ This allowed command execution as the user **jerry**.
 
 ---
 
-## 10. Docker Privilege Escalation
+## 12. Docker Privilege Escalation
 
 The user **jerry** was found to belong to the **docker group**, which allows interaction with Docker containers.
 
@@ -124,7 +144,7 @@ This command mounts the host filesystem into the container.
 
 ---
 
-## 11. Accessing the Host Filesystem
+## 13. Accessing the Host Filesystem
 
 Inside the container, the host filesystem became accessible via `/mnt`.
 
@@ -136,7 +156,7 @@ This allowed access to sensitive files on the host system.
 
 ---
 
-## 12. Root Flag
+## 14. Root Flag
 
 Finally, the root flag was retrieved:
 
@@ -148,17 +168,3 @@ cat root.txt
 
 This confirms **full root access** to the machine.
 
----
-
-## Conclusion
-
-This challenge demonstrated several important penetration testing concepts:
-
-* Network scanning (Nmap)
-* Web directory enumeration
-* Credential discovery
-* Privilege escalation using sudo
-* Docker privilege escalation
-* Accessing the host filesystem
-
-By chaining these vulnerabilities together, complete compromise of the system was achieved.
