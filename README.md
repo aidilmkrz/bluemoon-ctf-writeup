@@ -6,7 +6,7 @@ The goal of this challenge was to gain **root access** to the Bluemoon machine b
 
 ---
 
-# 1. Enumeration
+## 1. Enumeration
 
 Initial enumeration of the web server was performed using Gobuster to discover hidden directories.
 
@@ -16,29 +16,62 @@ gobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt
 
 This revealed several directories that could contain useful information for further exploitation.
 
-![Enumeration](enumeration.png.png)
+![Enumeration](enumeration.png)
 
 ---
 
-# 2. Credential Discovery
+## 2. Game Begins
+
+The target web application was accessed using a browser:
+
+http://192.168.56.101
+
+Upon visiting the page in Firefox, a message indicating the start of the challenge was displayed.
+
+![Game Begins](gamebegins.png)
+
+This confirmed that the web application is the primary entry point and further analysis was required.
+---
+
+## 3. Source Code Inspection
+
+The page source code was inspected to uncover hidden information.
+
+![View Source](viewsource.png)
+
+This revealed useful hints that guided further exploitation.
+
+---
+
+## 4. Bluemoon Page
+
+Further navigation led to the Bluemoon page.
+
+![Bluemoon](bluemoon.png)
+
+This page provided additional context for the challenge.
+
+---
+
+## 5. Credential Discovery
 
 During enumeration, a password list was discovered that contained possible credentials.
 
 This information was used to attempt authentication on the system.
 
-![Password List](password-list.png.png)
+![Password List](password-list.png)
 
 ---
 
-# 3. Login as Robin
+## 6. Login as Robin
 
 Using the discovered credentials, access to the system was obtained as the user **robin**.
 
-![Login Robin](login-robin.png.png)
+![Login Robin](login-robin.png)
 
 ---
 
-# 4. Privilege Escalation to Jerry
+## 7. Privilege Escalation to Jerry
 
 Further analysis revealed a script (`feedback.sh`) that could be executed with elevated permissions.
 
@@ -48,11 +81,11 @@ sudo -u jerry ./feedback.sh
 
 This allowed command execution as the user **jerry**.
 
-![Jerry Shell](jerry-shell.png.png)
+![Jerry Shell](jerry-shell.png)
 
 ---
 
-# 5. Docker Privilege Escalation
+## 8. Docker Privilege Escalation
 
 The user **jerry** was found to belong to the **docker group**, which allows interaction with Docker containers.
 
@@ -62,11 +95,11 @@ docker run -v /:/mnt -it alpine sh
 
 This command mounts the host filesystem into the container.
 
-![Docker Privilege Escalation](docker-privesc.png.png)
+![Docker Privilege Escalation](docker-privesc.png)
 
 ---
 
-# 6. Accessing the Host Filesystem
+## 9. Accessing the Host Filesystem
 
 Inside the container, the host filesystem became accessible via `/mnt`.
 
@@ -78,7 +111,7 @@ This allowed access to sensitive files on the host system.
 
 ---
 
-# 7. Root Flag
+## 10. Root Flag
 
 Finally, the root flag was retrieved:
 
@@ -86,13 +119,13 @@ Finally, the root flag was retrieved:
 cat root.txt
 ```
 
-![Root Flag](root-flag.png.png)
+![Root Flag](root-flag.png)
 
 This confirms **full root access** to the machine.
 
 ---
 
-# Conclusion
+## Conclusion
 
 This challenge demonstrated several important penetration testing concepts:
 
