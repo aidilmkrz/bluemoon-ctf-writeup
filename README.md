@@ -24,7 +24,7 @@ A network scan was performed using Nmap to identify open ports and services.
 nmap -sC -sV 192.168.56.101
 ```
 
-![Nmap Scan](nmapIP.png)
+![Nmap Scan](nmaptheIP.png)
 
 This provided useful information about available services for further enumeration.
 
